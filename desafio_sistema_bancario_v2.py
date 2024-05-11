@@ -1,32 +1,24 @@
 
 
 #listar contas = LC & Listar user = LU
-menu = """
---------------------------------------------
+def menu():
+    menu = """
+    --------------------------------------------
 
-            [D] Depositar
-            [S] Sacar
-            [E] Extrato
-            [C] Criar user
-            [CC] Criar conta corrente
-            [SECRET] Listar contas
-            [SECRET] Listar users  
-            [Q] Sair
+                [D] Depositar
+                [S] Sacar
+                [E] Extrato
+                [C] Criar user
+                [CC] Criar conta corrente
+                [SECRET] Listar contas
+                [SECRET] Listar users  
+                [Q] Sair
 
---------------------------------------------
-=> """
+    --------------------------------------------
+    => """
+    return input(menu)
 
-AGENCIA = "0001";
-conta = 1;
-saldo = 0;
-limite = 500;
-extrato = "";
-numero_saques = 1;
-LIMITE_SAQUES = 3;
-usuarios = []
-contas = []
-
-def depositar(sal, val, extrato):
+def depositar(sal, val, extrato, /):
     if val <= 0: #RETORNA PRO INICIO SE O VALOR MIN NÃO FOR SOLICITADO
             print("\n")
             print("-"*50)
@@ -64,7 +56,7 @@ def saque(*,sal, val, ext, lim, num_saq, lim_saq):
         
     return sal, ext
 
-def exibir_extrato(sal,*, ext):
+def exibir_extrato(sal ,/,*, ext):
     print("\n=============== EXTRATO ===============")
     print("Não foram realizadas movimentações." if not ext else ext)
     print(f"\nSaldo: R$ {sal:.2f}\n")
@@ -128,42 +120,54 @@ def listar_usuarios(users):
         print("-" * 50)
         print("\n")
 
-while True:
+def main():
+    AGENCIA = "0001";
+    conta = 1;
 
-    opcao = input(menu)
+    saldo = 0;
+    limite = 500;
+    extrato = "";
+    numero_saques = 1;
+    LIMITE_SAQUES = 3;
 
-    print(opcao)
-    
-    if opcao.upper() == "D":
-        valor_deposito = float(input("Informe o valor a ser depositado: R$ ")) #SOLICITA O VALOR DO DEPOSITO
-        saldo, extrato = depositar(saldo, valor_deposito, extrato)
+    usuarios = []
+    contas = []
 
-    elif opcao.upper() == "S": 
-        valor_saque = float(input("Informe o valor a ser sacado: R$ ")) #DISPONIBILIZA O SAQUE
-        saldo, extrato = saque(sal= saldo, val= valor_saque, ext= extrato, lim= limite, num_saq= numero_saques, lim_saq= LIMITE_SAQUES)
-        numero_saques += 1
+    while True:
 
-    elif opcao.upper() == "E":
-        exibir_extrato(saldo, ext= extrato)
+        opcao = menu()
 
-    elif opcao.upper() == "C":
-        criar_usuario(usuarios)
+        
+        if opcao.upper() == "D":
+            valor_deposito = float(input("Informe o valor a ser depositado: R$ ")) #SOLICITA O VALOR DO DEPOSITO
+            saldo, extrato = depositar(saldo, valor_deposito, extrato)
 
-    elif opcao.upper() == "CC":
-        nova_conta = criar_conta_corrente(AGENCIA, conta, usuarios)
+        elif opcao.upper() == "S": 
+            valor_saque = float(input("Informe o valor a ser sacado: R$ ")) #DISPONIBILIZA O SAQUE
+            saldo, extrato = saque(sal= saldo, val= valor_saque, ext= extrato, lim= limite, num_saq= numero_saques, lim_saq= LIMITE_SAQUES)
+            numero_saques += 1
 
-        if nova_conta:
-            contas.append(nova_conta)    
+        elif opcao.upper() == "E":
+            exibir_extrato(saldo, ext= extrato)
 
-    elif opcao.upper() == "LC":
-        listar_contas(contas)
-    
-    elif opcao.upper() == "LU":
-        listar_usuarios(usuarios)
+        elif opcao.upper() == "C":
+            criar_usuario(usuarios)
 
-    elif opcao.upper() == "Q":
-        print("Obrigado por usar nosso sistema!")
-        break
-    
-    else:
-        print("Operação inválida, por favor selecione novamente a operação desejada.")             
+        elif opcao.upper() == "CC":
+            nova_conta = criar_conta_corrente(AGENCIA, conta, usuarios)
+
+            if nova_conta:
+                contas.append(nova_conta)    
+
+        elif opcao.upper() == "LC":
+            listar_contas(contas)
+        
+        elif opcao.upper() == "LU":
+            listar_usuarios(usuarios)
+
+        elif opcao.upper() == "Q":
+            print("Obrigado por usar nosso sistema!")
+            break
+        
+        else:
+            print("Operação inválida, por favor selecione novamente a operação desejada.")             
